@@ -1,0 +1,221 @@
+---
+title: "Customizing the LaTeX Template: A Comprehensive Guide"
+subtitle: "A step-by-step guide to modifying the template structure"
+author: "Shubham Dutta"
+date: today
+format:
+  pdf:
+    template: template.tex
+    documentclass: scrartcl
+---
+
+## Overview
+
+This guide provides detailed instructions for customizing the LaTeX template used for PDF generation with Quarto. The template is built using KOMA-Script's `scrartcl` class and includes custom styling for typography, colors, and layout.
+
+## Basic Structure
+
+The template is organized into several key sections:
+
+1. Document Class and Basic Packages
+2. Font Configuration
+3. Color Definitions
+4. Header and Footer Setup
+5. Title Page Formatting
+6. Section Styling
+
+## Font Configuration
+
+### Current Setup
+The template uses three main fonts:
+- Roboto (main text)
+- Roboto Slab (headings)
+- JetBrains Mono (code)
+
+To modify fonts:
+
+```tex
+\setmainfont{NewFont}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+```
+
+**Note**: Ensure your font files are in the `./fonts/` directory and update the file names accordingly.
+
+## Color Scheme
+
+The template uses three main colors:
+
+```tex
+\definecolor{deepnavy}{HTML}{2D3047}   % Primary color for headings
+\definecolor{forestgreen}{HTML}{419D78} % Secondary color for subheadings
+\definecolor{charcoal}{HTML}{434A4F}   % Tertiary color for text
+```
+
+To modify colors:
+1. Choose your new color hex codes
+2. Update the color definitions
+3. Check all references to these colors in the document
+
+## Headers and Footers
+
+The current header configuration:
+
+- First page: No headers or footers
+- Subsequent pages:
+  - Left header: "Shubham Dutta"
+  - Right header: Page number
+
+To modify:
+
+```tex
+% Change header text
+\ihead*{\headingfont\small\textcolor{charcoal}{Your New Header}}
+
+% Remove headers from first page
+\AtBeginDocument{\thispagestyle{empty}}
+
+% Modify header styling
+\addtokomafont{pageheadfoot}{\headingfont\small}
+```
+
+## Title Page Elements
+
+The title page elements are left-aligned with custom spacing. The structure is controlled by the `\maketitle` command:
+
+```tex
+\renewcommand{\maketitle}{%
+    \noindent{\usekomafont{title}\@title}\par
+    \vspace{0.5em}
+    \ifx\@subtitle\@empty\else
+        \noindent{\usekomafont{subtitle}\@subtitle}\par
+    \fi
+    % ... additional elements
+}
+```
+
+To modify:
+1. Adjust `\vspace` values for different spacing
+2. Change font styling using `\addtokomafont`
+3. Add new elements by extending the `\maketitle` command
+
+## Section Styling
+
+Sections are unnumbered and styled with custom colors and fonts:
+
+```tex
+% Remove section numbering
+\setcounter{secnumdepth}{-1}
+
+% Section styling
+\addtokomafont{section}{\headingfont\color{deepnavy}\Large}
+\addtokomafont{subsection}{\headingfont\color{forestgreen}\large}
+```
+
+To modify:
+1. Enable section numbering: Remove or comment out `\setcounter{secnumdepth}{-1}`
+2. Change section appearance: Update `\addtokomafont` commands
+
+## Page Geometry
+
+Page margins are set to 25mm on all sides:
+
+```tex
+\geometry{
+    top=25mm,
+    left=25mm,
+    right=25mm,
+    bottom=25mm
+}
+```
+
+To modify:
+1. Update values in the geometry settings
+2. Use different units if needed (e.g., cm, in)
+
+## Common Modifications
+
+### 1. Adding a Logo
+```tex
+% In the preamble
+\usepackage{graphicx}
+
+% In the \maketitle command
+\includegraphics[width=2in]{path/to/logo}
+```
+
+### 2. Changing Line Spacing
+```tex
+% Add to preamble
+\usepackage{setspace}
+\onehalfspacing  % or \doublespacing
+```
+
+### 3. Modifying Page Numbers
+```tex
+% Change format
+\renewcommand{\pagemark}{{\headingfont\small\thepage}}
+
+% Change position
+\ofoot{\pagemark}  % Move to footer
+```
+
+### 4. Adding Custom Headers
+```tex
+% Add to preamble
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+% Configure as needed
+```
+
+## Using with Quarto
+
+To use this template with Quarto:
+
+1. Save the template as `template.tex`
+2. In your Quarto document YAML:
+
+```yaml
+format:
+  pdf:
+    template: template.tex
+    keep-tex: true  # Optional: keep generated LaTeX
+```
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **Font not found errors**
+   - Ensure fonts are in the correct directory
+   - Check font file names match the template
+   - Verify font files are accessible
+
+2. **Header/Footer issues**
+   - Check `scrpage2` package loading
+   - Verify page style commands
+   - Check for conflicting packages
+
+3. **Color undefined errors**
+   - Ensure `xcolor` package is loaded
+   - Verify color definitions
+   - Check for typos in color names
+
+## Best Practices
+
+1. Always backup the original template before making modifications
+2. Test changes incrementally
+3. Comment your modifications for future reference
+4. Keep a changelog of major modifications
+5. Test with different content types (tables, figures, code blocks)
+
+## Additional Resources
+
+- [KOMA-Script Documentation](https://ctan.org/pkg/koma-script)
+- [Quarto LaTeX Guide](https://quarto.org/docs/output-formats/pdf-basics.html)
+- [LaTeX Font Catalogue](https://tug.org/FontCatalogue/)

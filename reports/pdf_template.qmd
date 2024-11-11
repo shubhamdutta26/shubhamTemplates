@@ -1,0 +1,133 @@
+---
+title: "Professional Report Title"
+subtitle: "Report Subtitle"
+author: "Shubham Dutta, Ph.D."
+date: today
+date-format: "MMMM D, YYYY"
+format:
+  pdf:
+    template: template_report.tex
+    header-text: "Shubham Dutta" # change top left header
+    pdf-engine: xelatex
+    fig-cap-location: bottom
+    tbl-cap-location: top
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(knitr)
+library(shubhamPalette)
+library(kableExtra)
+
+knitr::opts_chunk$set(echo = TRUE,
+                      dev = "ragg_png",
+                      dpi = 400)
+
+theme_set(shubhamPalette::theme_shubhamd(base_family = "Roboto"))
+#theme_set(theme_void())
+```
+
+# Introduction
+
+This template demonstrates the use of brand colors and custom typography in a professional report. The design system includes:
+
+-   **Typography**
+    -   Headings: Roboto Slab
+    -   Body Text: Roboto
+    -   Code: JetBrains Mono
+-   **Colors**
+    -   Primary: Deep Navy (`#2D3047`)
+    -   Secondary: Forest Green (`#419D78`)
+    -   Accents: Golden Yellow (`#E0A458`) and Coral (`#E76F51`)
+
+## Colors
+
+```{r}
+#| label: colors
+display_shubhamd_colors()
+```
+
+## Sample Visualization
+
+```{r}
+#| label: fig-example
+#| fig-cap: "Example visualization using brand colors"
+#| fig-width: 5
+#| fig-height: 4
+
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  scale_color_shubhamd() +
+  labs(
+    title = "Vehicle Weight vs Fuel Efficiency",
+    subtitle = "Grouped by Number of Cylinders",
+    x = "Weight (1000 lbs)",
+    y = "Miles per Gallon",
+    color = "Cylinders"
+  )
+```
+
+## Sample Table
+
+```{r}
+#| label: tbl-example
+#| tbl-cap: "Example table using brand colors"
+
+mtcars %>%
+  head() %>%
+  kbl() %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    latex_options = c("striped"),
+    full_width = FALSE
+  ) %>%
+  row_spec(0, bold = TRUE)
+```
+
+# Methods
+
+## Code Example
+
+Here's an example of how code blocks look in this template:
+
+```{r}
+summary_stats <- mtcars %>%
+  group_by(cyl) %>%
+  summarise(
+    mean_mpg = mean(mpg),
+    sd_mpg = sd(mpg),
+    n = n()
+  )
+
+print(summary_stats)
+```
+
+# Results
+
+## Mathematical Equations
+
+The template also supports mathematical equations:
+
+$$
+f(x) = \int_{-\infty}^{\infty} \hat{f}(\xi)\,e^{2 \pi i \xi x} \,d\xi
+$$
+
+# Discussion
+
+This section demonstrates how different heading levels look in the document.
+
+## Subsection Example
+
+This shows a subsection with the secondary brand color.
+
+### Sub-subsection Example
+
+This shows the lowest heading level.
+
+# References {.unnumbered}

@@ -1,0 +1,120 @@
+% !TeX program = xelatex
+\documentclass[letterpaper]{scrreprt}
+% Basic packages
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{iftex}
+\usepackage{float}
+% Define pandoc command if not defined
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% For pandoc figures
+\newcommand{\pandocbounded}[1]{#1}
+% Set page geometry
+\geometry{
+    top=25mm,
+    left=25mm,
+    right=25mm,
+    bottom=25mm
+}
+% Define brand colors
+\definecolor{deepnavy}{HTML}{2D3047}
+\definecolor{forestgreen}{HTML}{419D78}
+\definecolor{charcoal}{HTML}{434A4F}
+% Set up fonts
+\setmainfont{Roboto}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\newfontfamily\headingfont{RobotoSlab}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold
+]
+\setmonofont{JetBrainsMono}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    Scale = 0.9
+]
+% KOMA-Script heading styles
+\addtokomafont{chapter}{\headingfont\color{deepnavy}\huge}
+\addtokomafont{section}{\headingfont\color{deepnavy}\Large}
+\addtokomafont{subsection}{\headingfont\color{forestgreen}\large}
+\addtokomafont{subsubsection}{\headingfont\color{forestgreen}\normalsize}
+\addtokomafont{paragraph}{\headingfont\color{charcoal}\normalsize}
+% Title page styling
+\addtokomafont{title}{\headingfont\color{deepnavy}}
+\addtokomafont{subtitle}{\headingfont\color{forestgreen}}
+\addtokomafont{author}{\headingfont\color{charcoal}}
+\addtokomafont{date}{\headingfont\color{charcoal}}
+% Table of contents styling
+\addtokomafont{disposition}{\headingfont}
+% Style hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=deepnavy,
+    filecolor=deepnavy,
+    urlcolor=forestgreen,
+    citecolor=deepnavy
+}
+% Custom page headers and footers
+\usepackage[automark]{scrlayer-scrpage}
+\clearpairofpagestyles
+% Define custom header text variable with default value
+\newcommand{\customheadertext}{$if(header-text)$$header-text$$else$Default Header$endif$}
+% Set up headers and footers
+\renewcommand*{\chapterpagestyle}{empty} % No header/footer on chapter pages
+\ohead{\headingfont\small\textcolor{charcoal}{\pagemark}}
+\ihead{\headingfont\small\textcolor{charcoal}{\customheadertext}}
+% Allow breaking of long URLs
+\usepackage{xurl}
+% For code blocks
+\usepackage{fancyvrb}
+\usepackage{listings}
+% For tables
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{etoolbox}
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+$for(header-includes)$
+$header-includes$
+$endfor$
+\begin{document}
+% Start page numbering from second page
+\pagenumbering{gobble} % Remove page number from first page
+$if(title)$
+\title{$title$}
+$endif$
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+$if(author)$
+\author{$author$}
+$endif$
+$if(date)$
+\date{$date$}
+$endif$
+\maketitle
+$if(toc)$
+\tableofcontents
+$endif$
+\clearpage
+\pagenumbering{arabic} % Start page numbering from 2
+$body$
+\end{document}

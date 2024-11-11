@@ -1,0 +1,160 @@
+% !TeX program = xelatex
+\documentclass[letterpaper]{scrartcl}
+% Basic packages
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{iftex}
+\usepackage{float}
+% Define pandoc command if not defined
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+% For pandoc figures
+\newcommand{\pandocbounded}[1]{#1}
+% Set page geometry
+\geometry{
+    top=25mm,
+    left=25mm,
+    right=25mm,
+    bottom=25mm
+}
+% Define brand colors
+\definecolor{deepnavy}{HTML}{2D3047}
+\definecolor{forestgreen}{HTML}{419D78}
+\definecolor{charcoal}{HTML}{434A4F}
+% Set up fonts
+\setmainfont{Roboto}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic
+]
+\newfontfamily\headingfont{RobotoSlab}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold
+]
+\setmonofont{JetBrainsMono}[
+    Path = ./fonts/,
+    Extension = .ttf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    Scale = 0.9
+]
+% Remove section numbering
+\setcounter{secnumdepth}{-1}
+
+% KOMA-Script heading styles
+\addtokomafont{section}{\headingfont\color{deepnavy}\Large}
+\addtokomafont{subsection}{\headingfont\color{deepnavy}\large}
+\addtokomafont{subsubsection}{\headingfont\color{deepnavy}\normalsize}
+\addtokomafont{paragraph}{\headingfont\color{charcoal}\normalsize}
+
+% Custom title format (left-aligned)
+\makeatletter
+\renewcommand{\maketitle}{%
+    \noindent{\usekomafont{title}\@title}\par
+    \vspace{0.5em}
+    \ifx\@subtitle\@empty\else
+        \noindent{\usekomafont{subtitle}\@subtitle}\par
+    \fi
+    \vspace{0.5em}
+    \ifx\@author\@empty\else
+        \noindent{\usekomafont{author}\@author}\par
+    \fi
+    \ifx\@date\@empty\else
+        \vspace{0.5em}
+        \noindent{\usekomafont{date}\@date}\par
+    \fi
+    \vspace{2em}
+}
+\makeatother
+
+% Title styling
+\addtokomafont{title}{\headingfont\color{forestgreen}\huge}
+\addtokomafont{subtitle}{\headingfont\color{deepnavy}\Large}
+\addtokomafont{author}{\headingfont\color{charcoal}\large}
+\addtokomafont{date}{\headingfont\color{charcoal}\normalsize}
+
+% Table of contents styling
+\addtokomafont{disposition}{\headingfont}
+
+% Style hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=deepnavy,
+    filecolor=deepnavy,
+    urlcolor=forestgreen,
+    citecolor=deepnavy
+}
+
+% Define header text command with default value
+\providecommand{\headertext}{Shubham Dutta}
+
+% Custom page headers and footers
+\usepackage[automark]{scrlayer-scrpage}
+\clearpairofpagestyles
+\ohead{\headingfont\small\textcolor{charcoal}{\pagemark}}
+\ihead*{\headingfont\small\textcolor{charcoal}{\headertext}}
+\pagestyle{scrheadings}
+
+% Remove all headers and footers from first page
+\AtBeginDocument{\thispagestyle{empty}}
+
+% Allow breaking of long URLs
+\usepackage{xurl}
+
+% For code blocks
+\usepackage{fancyvrb}
+\usepackage{listings}
+
+% For tables
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{etoolbox}
+
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+$if(header-text)$
+\renewcommand{\headertext}{$header-text$}
+$endif$
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\begin{document}
+
+$if(title)$
+\title{$title$}
+$endif$
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+$if(author)$
+\author{$author$}
+$endif$
+$if(date)$
+\date{$date$}
+$endif$
+
+\maketitle
+
+$if(toc)$
+\tableofcontents
+$endif$
+
+$body$
+
+\end{document}

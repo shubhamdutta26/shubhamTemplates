@@ -1,0 +1,88 @@
+---
+title: "Your Presentation Title"
+subtitle: "Optional Subtitle"
+author: "Your Name"
+date: last-modified
+---
+
+## Your First Slide {.center}
+
+This is your first slide with some text in Roboto font.
+
+- Bullet point 1
+- Bullet point 2
+- Bullet point 3
+
+## Code Example {.smaller}
+
+Here's how your R code will look:
+
+```{r}
+#| echo: true
+library(ggplot2)
+library(shubhamPalette)
+
+ggplot(mtcars, aes(wt, mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  scale_color_manual(values = brand_palette("main")) +
+  theme_sd() +
+  labs(title = "MPG vs Weight by Cylinders",
+       x = "Weight (1000 lbs)",
+       y = "Miles per Gallon")
+```
+
+## Columns Layout {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+### Left Column
+
+- Point 1
+- Point 2
+- Point 3
+:::
+
+::: {.column width="50%"}
+### Right Column
+
+```{r}
+#| echo: false
+plot(pressure)
+```
+:::
+:::
+
+## Special Formatting
+
+> This is a blockquote that will use your brand styling
+
+::: {.alert}
+This is an alert box that uses your coral color
+:::
+
+## Tables and Lists
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Value 1  | Value 2  | Value 3  |
+| Value 4  | Value 5  | Value 6  |
+
+1. Numbered list item 1
+2. Numbered list item 2
+   - Nested bullet point
+   - Another nested point
+3. Numbered list item 3
+
+## Incremental Slides {.smaller}
+
+::: {.incremental}
+- First point appears
+- Second point will appear
+- Third point will appear last
+:::
+
+## End Slide {.center}
+
+### Thank You!
+
+[Your Contact Information]{.footer}
