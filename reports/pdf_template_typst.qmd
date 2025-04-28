@@ -1,20 +1,16 @@
 ---
 title: "Professional Report Title"
 subtitle: "Report Subtitle"
-author: "Shubham Dutta, Ph.D."
+author:
+  - name: "Shubham Dutta, Ph.D."
+    email: contact@shubhamdutta.com
+    affiliations:
+      - name: UMass Chan Medical School
 date: today
-date-format: "MMMM D, YYYY"
 format:
-  pdf:
-    template: template_report.tex
-    header-text: "Shubham Dutta" # change top left header
-    pdf-engine: xelatex
-    fig-cap-location: bottom
-    tbl-cap-location: top
-execute:
-  echo: true
-  warning: false
-  message: false
+  typst:
+    template: template_report_dev.typ
+fig-format: png
 ---
 
 ```{r}
@@ -24,12 +20,13 @@ library(tidyverse)
 library(knitr)
 library(sdtools)
 library(kableExtra)
+library(gt)
 
 knitr::opts_chunk$set(echo = TRUE,
                       dev = "ragg_png",
                       dpi = 400)
 
-theme_set(theme_sd(base_family = "Roboto", major_tick_length = -1))
+theme_set(sdtools::theme_sd(base_family = "Roboto", major_tick_length = -1))
 ```
 
 # Introduction
@@ -59,21 +56,20 @@ display_colors_d("main")
 #| fig-cap: "Example visualization using brand colors"
 #| fig-width: 5
 #| fig-height: 4
+#| echo: false
 
 ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
-  geom_point(size = 3, alpha = 0.8) +
-  geom_smooth(method = "lm", se = FALSE, alpha = 0.8) +
+  geom_point(size = 3) +
   scale_color_shubham_d() +
   scale_x_continuous(expand = expansion(0)) +
   scale_y_continuous(expand = expansion(0)) +
   guides(x.sec = "axis", y.sec = "axis") +
   labs(
-    title = "Vehicle Weight vs. Fuel Efficiency",
-    subtitle = "Relationship across different cylinder counts",
+    title = "Vehicle Weight vs Fuel Efficiency",
+    subtitle = "Grouped by Number of Cylinders",
     x = "Weight (1000 lbs)",
     y = "Miles per Gallon",
-    color = "Number of\nCylinders",
-    caption = "Data source: mtcars dataset"
+    color = "Cylinders"
   )
 ```
 
@@ -116,22 +112,18 @@ ggplot(cyl_summary, aes(x = factor(cyl), y = mean_hp, fill = factor(cyl))) +
   )
 ```
 
-
 ## Sample Table
 
 ```{r}
 #| label: tbl-example
 #| tbl-cap: "Example table using brand colors"
+#| tbl-cap-location: bottom
+#| eval: true
+#| echo: false
 
-mtcars %>%
-  head() %>%
-  kbl() %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover"),
-    latex_options = c("striped"),
-    full_width = FALSE
-  ) %>%
-  row_spec(0, bold = TRUE)
+mtcars |>
+  head() |>
+  knitr::kable()
 ```
 
 # Methods
@@ -141,15 +133,11 @@ mtcars %>%
 Here's an example of how code blocks look in this template:
 
 ```{r}
-summary_stats <- mtcars %>%
-  group_by(cyl) %>%
-  summarise(
-    mean_mpg = mean(mpg),
-    sd_mpg = sd(mpg),
-    n = n()
-  )
-
-print(summary_stats)
+temps <- data.frame(
+  year = c(1920:1924),
+  Jan = c(40.6, 44.2, 37.5, 41.8, 39.3), 
+  Jun = c(58.5, 58.7, 57.8, 52.7, 57.7)
+)
 ```
 
 # Results
@@ -174,4 +162,5 @@ This shows a subsection with the secondary brand color.
 
 This shows the lowest heading level.
 
-# References {.unnumbered}
+::: {#refs}
+:::
